@@ -1,95 +1,72 @@
+/*
+1.	Terdapat suatu tempat game online ingin membuat billing dengan aturan sebagai berikut:
+a.	Harga tiap jamnya adalah Rp 10000
+b.	Jika ada customer ingin main melebihi 4jam maka akan mendapat diskon 10%
+c.	Jika ada customer ingin main melebihi 6jam maka akan mendapat diskon 15%
+d.	Jika ada customer ingin main melebihi dari 8jam maka akan mendapat diskon 20%
+e.	Diatas 10 jam maka akan diskon berlaku 25%.
+Buatlah sistem tersebut untuk menghitung lama pemakian dan jumlah yang harus dibayarkan oleh customer game online tersebut
+*/
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <math.h>
-#include <locale.h>
 
-double calculateDiscount(double playTimeInHours, double totalPrice) {
-    if (playTimeInHours > 10) {
-        return totalPrice*0.25;
+int main()
+{
+    int jam;
+    int hargaPerJam = 10000;
+    double hargaSebelumDiskon, hargaTotal, diskon, potonganHarga;
+    int persentaseDiskon;
+
+    printf("=============SELAMAT DATANG DI WARNET=============\n\n");
+
+    printf("Masukkan lama bermain dalam jam:");
+    scanf("%d", &jam);
+
+    if (jam > 10)
+    {
+        diskon = 0.25;
+    }
+    else if (jam > 8)
+    {
+        diskon = 0.20;
+    }
+    else if (jam > 6)
+    {
+        diskon = 0.15;
+    }
+    else if (jam > 4)
+    {
+        diskon = 0.10;
+    }
+    else
+    {
+        diskon = 0.0;
     }
 
-    if (playTimeInHours > 8) {
-        return totalPrice*0.2;
+    hargaSebelumDiskon = hargaPerJam * jam;
+    potonganHarga = hargaSebelumDiskon * diskon;
+    hargaTotal = hargaSebelumDiskon - potonganHarga;
+    persentaseDiskon = diskon * 100;
+
+    if (jam <= 0)
+    {
+        printf("Masukan angka yang valid");
+    }
+    else if (jam >= 1)
+    {
+        printf("\n===================TOTAL BAYAR====================\n\n");
+
+        printf("Anda bermain selama: %d jam\n", jam);
+        printf("Harga perjam: Rp.%d.00\n", hargaPerJam);
+        printf("Total harga: Rp.%.2f\n", hargaSebelumDiskon);
+        if (diskon > 0.0)
+        {
+            printf("Anda mendapatkan diskon sebesar: %d%%\n", persentaseDiskon);
+            printf("Anda berhak mendapat potongan harga sebanyak: Rp.%.2f\n", potonganHarga);
+            printf("Maka total yang harus dibayar adalah: Rp.%.2f", hargaTotal);
+        }
+        printf("\n\n==================================================");
     }
 
-    if (playTimeInHours > 6) {
-        return totalPrice*0.15;
-    }
-
-    if (playTimeInHours > 4) {
-        return totalPrice*0.1;
-    }
-
-    return 0;
-}
-
-double calculatePrice(double playTimeInHours) {
-    const double hourlyRate = 10000.0;
-    return playTimeInHours * hourlyRate;
-}
-
-int main() {
-    char inputStartTime[128], inputEndTime[128];
-    char modifiedStartTime[128], modifiedEndTime[128];
-    struct tm startTime;
-    struct tm endTime;
-
-    printf("Masukan jam mulai dengan format YYYY/MM/DDTHH:MM:SS: ");
-    scanf("%s", inputStartTime);
-
-    // Replace 'T' with a space for inputStartTime
-    strcpy(modifiedStartTime, inputStartTime); // Copy input to modified variable
-    char *tPtr = strchr(modifiedStartTime, 'T');
-    if (tPtr != NULL) {
-        *tPtr = ' ';
-    }
-
-    if (strptime(modifiedStartTime, "%Y/%m/%d %H:%M:%S", &startTime) == NULL) {
-        fprintf(stderr, "Error parsing date string\n");
-        return 1;
-    }
-
-    time_t tStart = mktime(&startTime);
-    if (tStart == -1) {
-        fprintf(stderr, "Error converting date\n");
-        return 1;
-    }
-
-    printf("Masukan jam selesai dengan format YYYY/MM/DDTHH:MM:SS: ");
-    scanf("%s", inputEndTime);
-
-    // Replace 'T' with a space for inputEndTime
-    strcpy(modifiedEndTime, inputEndTime); // Copy input to modified variable
-    char *endPtr = strchr(modifiedEndTime, 'T');
-    if (endPtr != NULL) {
-        *endPtr = ' ';
-    }
-
-    if (strptime(modifiedEndTime, "%Y/%m/%d %H:%M:%S", &endTime) == NULL) {
-        fprintf(stderr, "Error parsing date string\n");
-        return 1;
-    }
-
-    time_t tEnd = mktime(&endTime);
-    if (tEnd == -1) {
-        fprintf(stderr, "Error converting date\n");
-        return 1;
-    }
-
-    double playTimeInSeconds = difftime(tEnd, tStart);
-    double playTimeInHours = floor(playTimeInSeconds/3600.0);
-    double totalPrice = calculatePrice(playTimeInHours);
-    double discount = calculateDiscount(playTimeInHours, totalPrice);
-    double finalAmount = totalPrice - discount;
-
-
-    printf("Mulai bermain pada jam           : %s", asctime(&startTime));
-    printf("Selesai bermain pada jam         : %s", asctime(&endTime));
-    printf("Lama bermain (dalam jam)         : %.1f\n", playTimeInHours);
-    printf("Harga billing                    : %.2f\n", totalPrice);
-    printf("Discount                         : %.2f\n", discount);
-    printf("Harga Billing Yang Harus Dibayar : %.2f\n", finalAmount);
     return 0;
 }
