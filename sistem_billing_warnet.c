@@ -88,9 +88,8 @@ int main() {
     printf("Mulai bermain pada jam           : %s", asctime(&startTime));
     printf("Selesai bermain pada jam         : %s", asctime(&endTime));
     printf("Lama bermain (dalam jam)         : %.1f\n", playTimeInHours);
-    printf("Harga billing                    : %s\n", doubleToRupiahString(totalPrice));
-    printf("Discount                         : %s\n", doubleToRupiahString(discount));
-    printf("Harga Billing Yang Harus Dibayar : %s\n", doubleToRupiahString(finalAmount));
-
+    printf("Harga billing                    : %.2f\n", totalPrice);
+    printf("Discount                         : %.2f\n", discount);
+    printf("Harga Billing Yang Harus Dibayar : %.2f\n", finalAmount);
     return 0;
 }
